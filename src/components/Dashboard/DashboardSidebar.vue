@@ -54,13 +54,13 @@ const auth = useAuthStore()
       </button>
       <button @click="toggleMobileMenu" class="md:hidden">✖</button>
     </div>
-    <nav class="p-4 space-y-2">
+    <nav class="p-4 space-y-2 ">
       <router-link
         active-class="text-blue-500 font-semibold"
         to="/home/dashboard"
         class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 hover:text-blue-500"
       >
-        <i class="pi pi-home"></i>
+        <i class="pi pi-home text-xl"></i>
         <span v-show="!props.collapsed">Home</span>
       </router-link>
 
@@ -70,7 +70,7 @@ const auth = useAuthStore()
         to="/home/user"
         class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 hover:text-blue-500"
       >
-        <i class="pi pi-user"></i>
+        <i class="pi pi-user text-xl"></i>
         <span v-show="!props.collapsed">User</span>
       </router-link>
 
@@ -79,7 +79,7 @@ const auth = useAuthStore()
         to="/home/role"
         class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 hover:text-blue-500"
       >
-        <i class="pi pi-lock"></i>
+        <i class="pi pi-lock text-xl"></i>
         <span v-show="!props.collapsed">Role Management</span>
       </router-link>
 
@@ -90,23 +90,17 @@ const auth = useAuthStore()
         to="/home/departments"
         class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 hover:text-blue-500"
       >
-        <i class="pi pi-building"></i>
+        <i class="pi pi-building text-xl"></i>
         <span v-show="!props.collapsed">Employee Department</span>
       </router-link>
-      <a
-        href="#"
+      <router-link
+        active-class="text-blue-500 font-semibold"
+        to="/home/employees"
         class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 hover:text-blue-500"
       >
-        <i class="pi pi-users"></i>
+        <i class="pi pi-users text-xl"></i>
         <span v-show="!props.collapsed">Employee List</span>
-      </a>
-      <a
-        href="#"
-        class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 hover:text-blue-500"
-      >
-        <i class="pi pi-money-bill"></i>
-        <span v-show="!props.collapsed">Employee Salary</span>
-      </a>
+      </router-link>
     </nav>
   </aside>
 </template>

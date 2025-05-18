@@ -1,78 +1,69 @@
 <script setup lang="ts">
 import PrimaryButton from '@/components/PrimaryButton.vue'
 import FormInput from '@/components/Form/FormInput.vue'
-import { computed, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import DynamicInput from '@/components/DynamicInput.vue'
 import SelectInput from '@/components/Form/SelectInput.vue'
-import { fetchDepartments, updateDepartment } from '@/api/departments.ts'
-import type { DepartmentPayload } from '@/types/types.ts'
+import { fetchDepartments } from '@/api/departments.ts'
+import type { EmployeePayload } from '@/types/types.ts'
 import { toast } from 'vue3-toastify'
 import axios from 'axios'
-import useDepartmentStore from '@/stores/useDepartmentStore.ts'
+import { addEmployee, fetchEmployees } from '@/api/employees.ts'
+import useEmployeeStore from '@/stores/useEmployeeStore.ts'
 
 const emit = defineEmits(['toggleModal'])
 const error = ref<Record<string, string[]>>({})
-const props = defineProps({
-  departmentIndex: {
-    type: Number,
-    required: true,
-  },
-})
-const departmentStore = useDepartmentStore()
-
-const departmentPaylaod = ref<DepartmentPayload>({
-  name: '',
-  established_at: '',
+const employeeStore = useEmployeeStore()
+const employeePayload = ref<EmployeePayload>({
+  full_name: '',
+  hired_date: '',
   notes: [''],
   is_active: 1,
+  department_id: '',
 })
-
-const currentDept = computed(() => departmentStore.departments[props.departmentIndex])
-watch(
-  currentDept,
-  (newDept) => {
-    if (newDept) {
-      departmentPaylaod.value = {
-        name: newDept.name,
-        established_at: newDept.established_at,
-        notes: newDept.notes,
-        is_active: newDept.is_active ? 1 : 0,
-      }
-    }
-  },
-  { immediate: true },
-)
 
 const status = ref([
   { label: 'Active', value: 1 },
   { label: 'Inactive', value: 0 },
 ])
 
+const department = ref<{ label: string; value: string }[]>([])
+
+onMounted(async () => {
+  const res = await fetchDepartments()
+  for (const dep of res.data.data) {
+    department.value.push({
+      label: dep.name,
+      value: dep.id,
+    })
+  }
+})
+
 const isLoading = ref<boolean>(false)
 
 const saveHandler = async () => {
   isLoading.value = true
   try {
-    await updateDepartment(currentDept.value.id, departmentPaylaod.value)
+    await addEmployee(employeePayload.value)
 
-    const departments = await fetchDepartments()
+    const employees = await fetchEmployees()
 
-    departmentStore.setDepartments(departments.data)
+    employeeStore.setEmployees(employees.data)
 
-    toast.success('Department updated successfully')
+    toast.success('employee added successfully')
     emit('toggleModal')
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
       error.value = err.response.data.errors
     } else {
-      error.value.name = ['something went wrong']
+      error.value.full_name = ['something went wrong']
     }
   }
   isLoading.value = false
 }
 
 const handleCreateOption = (value: number) => {
-  departmentPaylaod.value.is_active = value
+  employeePayload.value.is_active = value
 }
 </script>
 
@@ -82,14 +73,25 @@ const handleCreateOption = (value: number) => {
       name="name"
       type="text"
       placeholder="John Doe"
-      v-model="departmentPaylaod.name"
+      v-model="employeePayload.full_name"
       :error="error?.name?.length ? error?.name[0] : ''"
     />
+    <div class="mb-5">
+      <label class="capitalize block mb-2 text-sm font-medium text-gray-900">Department</label>
+      <SelectInput
+        :options="department"
+        v-model="employeePayload.department_id"
+        @create-option="handleCreateOption"
+      />
+      <p v-if="error?.is_active?.length" class="text-red-600 text-sm mb-4">
+        {{ error?.department_id[0] }}
+      </p>
+    </div>
     <div class="mb-5">
       <label class="capitalize block mb-2 text-sm font-medium text-gray-900">Status</label>
       <SelectInput
         :options="status"
-        v-model="departmentPaylaod.is_active"
+        v-model="employeePayload.is_active"
         @create-option="handleCreateOption"
       />
       <p v-if="error?.is_active?.length" class="text-red-600 text-sm mb-4">
@@ -97,16 +99,16 @@ const handleCreateOption = (value: number) => {
       </p>
     </div>
     <FormInput
-      name="Estabilished At"
+      name="Hired Date"
       type="datetime-local"
-      v-model="departmentPaylaod.established_at"
-      :error="error?.established_at?.length ? error?.established_at[0] : ''"
+      v-model="employeePayload.hired_date"
+      :error="error?.hired_date?.length ? error?.hired_date[0] : ''"
     />
     <DynamicInput
       name="Notes"
       type="text"
       placeholder="this is a note"
-      v-model="departmentPaylaod.notes"
+      v-model="employeePayload.notes"
     />
 
     <footer class="flex justify-between">

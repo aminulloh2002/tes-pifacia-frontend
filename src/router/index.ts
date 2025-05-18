@@ -18,7 +18,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.meta.requiresAuth) {
     try {
-      const ping = await api.get('check-token',{
+      const ping = await api.get('check-token', {
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
@@ -35,12 +35,13 @@ router.beforeEach(async (to, from, next) => {
       next({ name: 'login' })
     } else if (to.meta.requiresAdministrator && !auth.isAdministrator) {
       next({ name: 'home.dashboard' })
-    } else if (to.path === '/login' && auth.isAuthenticated) {
-      next({ name: 'home.dashboard' })
     } else {
       next()
     }
   } else {
+    if (to.path === '/login' && auth.isAuthenticated) {
+      next({ name: 'home.dashboard' })
+    }
     next()
   }
 })

@@ -2,9 +2,6 @@ import LandingView from '@/views/LandingView.vue'
 import LoginView from '@/views/LoginView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
-import HomeComponent from '@/components/Dashboard/HomeComponent.vue'
-import RoleComponent from '@/components/Dashboard/RoleComponent.vue'
-import UserComponent from '@/components/Dashboard/UserComponent.vue'
 
 export const routes = [
   {
@@ -50,6 +47,11 @@ export const routes = [
             name: 'home.departments.details',
           }
         ]
+      },
+      {
+        'path': 'employees',
+        component: () => import('@/components/Dashboard/Employees/EmployeesComponent.vue'),
+        name: 'home.employees',
       },
     ],
   },

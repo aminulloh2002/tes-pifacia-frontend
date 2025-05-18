@@ -38,8 +38,26 @@ export type DepartmentPayload = {
   notes: Array<string>
 }
 
+export type EmployeePayload = {
+  full_name: string
+  is_active: number
+  hired_date: string
+  notes: Array<string>
+  department_id: string
+}
+
+export type Employee = {
+  id: string
+  full_name: string
+  is_active: number
+  hired_date: string
+  notes: Array<string>
+  department_id: string
+  department_name: string
+}
+
 export type Department = {
-  id: number
+  id: string
   name: string
   is_active: boolean
   established_at: string
@@ -60,25 +78,27 @@ export type userStore = {
   to: number
 }
 
+type meta = {
+  total: number
+  current_page: number
+  last_page: number
+  per_page: number
+  to: number
+}
+
 export type fetchUserResponse = {
   data: user[]
-  meta: {
-    total: number
-    current_page: number
-    last_page: number
-    per_page: number
-    to: number
-  }
+  meta: meta
 }
+
 export type fetchDepartmentResponse = {
   data: Department[]
-  meta: {
-    total: number
-    current_page: number
-    last_page: number
-    per_page: number
-    to: number
-  }
+  meta: meta
+}
+
+export type fetchEmployeeResponse = {
+  data: Employee[]
+  meta: meta
 }
 
 export type RoleStore = {
@@ -87,6 +107,15 @@ export type RoleStore = {
 
 export type DepartmentStore = {
   departments: Department[]
+  total: number
+  current_page: number
+  last_page: number
+  per_page: number
+  to: number
+}
+
+export type EmployeeStore = {
+  employees: Employee[]
   total: number
   current_page: number
   last_page: number

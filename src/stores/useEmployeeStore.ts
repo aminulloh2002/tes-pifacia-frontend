@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import type { DepartmentStore, fetchDepartmentResponse } from '@/types/types.ts'
+import type { EmployeeStore, fetchEmployeeResponse } from '@/types/types.ts'
 
-const useRoleStore = defineStore('departments', {
-  state: (): DepartmentStore => ({
-    departments: [],
+const useRoleStore = defineStore('employee', {
+  state: (): EmployeeStore => ({
+    employees: [],
     last_page: 0,
     current_page: 0,
     per_page: 0,
@@ -11,16 +11,16 @@ const useRoleStore = defineStore('departments', {
     to: 0,
   }),
   actions: {
-    setDepartments(res: fetchDepartmentResponse) {
-      this.departments = res.data
+    setEmployees(res: fetchEmployeeResponse) {
+      this.employees = res.data
       this.current_page = res.meta.current_page
       this.last_page = res.meta.last_page
       this.per_page = res.meta.per_page
       this.total = res.meta.total
       this.to = res.meta.to
     },
-    clearDepartments() {
-      this.departments = []
+    clearEmployees() {
+      this.employees = []
     },
   },
 })
