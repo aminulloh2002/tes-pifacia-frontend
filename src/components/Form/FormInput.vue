@@ -8,7 +8,7 @@ const props = defineProps({
   },
   name: String,
   type: {
-    type: String as PropType<'text' | 'password' | 'email' | 'number'>,
+    type: String as PropType<'text' | 'password' | 'email' | 'number' | 'datetime-local' | 'date'>,
   },
   id: String,
   class: String,

@@ -9,7 +9,7 @@ const props = defineProps({
   },
   name: String,
   options: {
-    type: Array as PropType<{ label: string; value: string }[]>,
+    type: Array as PropType<{ label: string; value: string | number }[]>,
     required: true,
   },
   class: String,

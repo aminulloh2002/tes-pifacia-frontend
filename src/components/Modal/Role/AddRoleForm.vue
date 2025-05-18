@@ -41,7 +41,7 @@ const saveHandler = async () => {
     const roles = await fetchAllRoles()
 
     roleStore.setRoles(roles.data)
-    toast.success('User added successfully')
+    toast.success('Role added successfully')
     emit('toggleModal')
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {

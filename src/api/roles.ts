@@ -27,7 +27,7 @@ const addRole = async (payload: rolesPayload) => {
   })
 }
 
-const updateRole = async (id: number, payload: { name: string }) => {
+const updateRole = async (id: number, payload: rolesPayload) => {
   return api.post(
     `roles/${id}`,
     { ...payload, _method: 'PUT' },

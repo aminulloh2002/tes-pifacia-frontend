@@ -1,17 +1,19 @@
 import api from '@/utils/axios.ts'
 import type { DepartmentPayload } from '@/types/types.ts'
 
-const fetchDepartments = async (search?: string, page?: number) => {
-  const url = search ? 'departments?filter[query]=' + search : 'departments'
-  if (page) {
-    return api.get(url, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      params: { page },
-    })
-  }
+const fetchDepartments = async (search?: string, page?: number, orderBy?: string, asc?: boolean) => {
+  const url = 'departments'
+  const params: Record<string, unknown> = {}
+
+  if (search) params['filter[query]'] = search
+  if (page) params.page = page
+  if (orderBy) params['sort'] = asc ? '' + orderBy : '-' + orderBy
 
   return api.get(url, {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    params,
   })
 }
 
@@ -37,10 +39,10 @@ const updateDepartment = async (id: number, payload: DepartmentPayload) => {
   )
 }
 
-const deleteUser = async (id: number) => {
+const deleteDepartment = async (id: number) => {
   return api.delete(`departments/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
   })
 }
 
-export { fetchDepartments, fetchDepartmentDetails, updateDepartment, deleteUser, addDepartment }
+export { fetchDepartments, fetchDepartmentDetails, updateDepartment, deleteDepartment, addDepartment }

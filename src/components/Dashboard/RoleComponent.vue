@@ -128,31 +128,27 @@ const openEditModal = (index: number) => {
         </table>
       </div>
 
-            <ModalComponent
-              v-model="showAddModal"
-              title="Add Role"
-              @close="() => (showAddModal = false)"
-            >
-              <AddRoleForm @toggle-modal="showAddModal = false" />
-            </ModalComponent>
-<!--            <ModalComponent-->
-<!--              v-model="showEditModal"-->
-<!--              title="Edit User"-->
-<!--              @close="() => (showEditModal = false)"-->
-<!--            >-->
-<!--              <UpdateRoleForm @toggle-modal="showEditModal = false" :userIndex="selectedUserIndex" />-->
-<!--            </ModalComponent>-->
+      <ModalComponent v-model="showAddModal" title="Add Role" @close="() => (showAddModal = false)">
+        <AddRoleForm @toggle-modal="showAddModal = false" />
+      </ModalComponent>
+      <ModalComponent
+        v-model="showEditModal"
+        title="Edit Role"
+        @close="() => (showEditModal = false)"
+      >
+        <UpdateRoleForm @toggle-modal="showEditModal = false" :roleIndex="selectedRoleIndex" />
+      </ModalComponent>
 
-            <ModalComponent
-              v-model="showDeleteModal"
-              title="Warning"
-              @close="() => (showDeleteModal = false)"
-            >
-              <DeleteRoleConfirmation
-                :roleIndex="selectedRoleIndex"
-                @toggle-modal="showDeleteModal = false"
-              />
-            </ModalComponent>
+      <ModalComponent
+        v-model="showDeleteModal"
+        title="Warning"
+        @close="() => (showDeleteModal = false)"
+      >
+        <DeleteRoleConfirmation
+          :roleIndex="selectedRoleIndex"
+          @toggle-modal="showDeleteModal = false"
+        />
+      </ModalComponent>
     </div>
   </main>
 </template>

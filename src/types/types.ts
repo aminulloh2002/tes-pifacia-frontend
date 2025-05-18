@@ -33,8 +33,8 @@ export type UserPayload = {
 
 export type DepartmentPayload = {
   name: string
-  active: boolean
-  established: string
+  is_active: number
+  established_at: string
   notes: Array<string>
 }
 
@@ -42,7 +42,7 @@ export type Department = {
   id: number
   name: string
   is_active: boolean
-  established: string
+  established_at: string
   notes: Array<string>
 }
 
@@ -70,6 +70,16 @@ export type fetchUserResponse = {
     to: number
   }
 }
+export type fetchDepartmentResponse = {
+  data: Department[]
+  meta: {
+    total: number
+    current_page: number
+    last_page: number
+    per_page: number
+    to: number
+  }
+}
 
 export type RoleStore = {
   roles: Roles[]
@@ -77,4 +87,9 @@ export type RoleStore = {
 
 export type DepartmentStore = {
   departments: Department[]
+  total: number
+  current_page: number
+  last_page: number
+  per_page: number
+  to: number
 }

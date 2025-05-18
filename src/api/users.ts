@@ -2,18 +2,19 @@ import api from '@/utils/axios.ts'
 import type { UserPayload } from '@/types/types.ts'
 
 const fetchUsers = async (search?: string, page?: number) => {
-  const url = search ? 'users?filter[query]=' + search : 'users'
-  if (page) {
-    return api.get(url, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      params: { page },
-    })
-  }
+  const url = 'users';
+  const params: Record<string, unknown> = {};
+
+  if (search) params['filter[query]'] = search;
+  if (page) params.page = page;
 
   return api.get(url, {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-  })
-}
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    params,
+  });
+};
 
 // const fetchUserDetail = async (id: string) => {
 //   return api.get(`users/${id}`, {
