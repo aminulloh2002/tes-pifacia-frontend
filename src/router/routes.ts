@@ -40,18 +40,31 @@ export const routes = [
         path: 'departments',
         component: () => import('@/components/Dashboard/Departments/DepartmentComponent.vue'),
         name: 'home.departments',
-        children: [
-          {
-            path: 'details',
-            component: () => import('@/components/Dashboard/Departments/DepartmentDetails.vue'),
-            name: 'home.departments.details',
-          }
-        ]
       },
       {
-        'path': 'employees',
+        path: 'departments/:id',
+        component: () => import('@/components/Dashboard/Departments/DepartmentDetails.vue'),
+        name: 'home.departments.details',
+      },
+      {
+        path: 'employees',
         component: () => import('@/components/Dashboard/Employees/EmployeesComponent.vue'),
         name: 'home.employees',
+      },
+      {
+        path: 'employees/:id',
+        component: () => import('@/components/Dashboard/Employees/EmployeesDetails.vue'),
+        name: 'home.employees.details',
+      },
+      {
+        path: 'salaries',
+        component: () => import('@/components/Dashboard/Salaries/SalariesComponent.vue'),
+        name: 'home.salaries',
+      },
+      {
+        path: 'salaries/:id',
+        component: () => import('@/components/Dashboard/Salaries/SalaryDetails.vue'),
+        name: 'home.salaries.details',
       },
     ],
   },

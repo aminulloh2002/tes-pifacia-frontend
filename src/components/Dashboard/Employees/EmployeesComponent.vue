@@ -17,8 +17,8 @@ const showAddModal = ref(false)
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 const selectedEmployeeIndex = ref(-1)
-const orderBy = ref<string>('full_name')
-const asc = ref<boolean>(true)
+const orderBy = ref<string>('created_at')
+const asc = ref<boolean>(false)
 
 onMounted(async () => {
   try {
@@ -104,7 +104,6 @@ const fetchData = async (page: number) => {
             <tr>
               <th scope="col" class="px-6 py-3">No</th>
               <th scope="col" class="px-6 py-3">
-<!--                sort -->
                 <span
                   @click="orderBy = 'full_name'; asc = !asc"
                   class="cursor-pointer flex items-center gap-1"
@@ -170,11 +169,11 @@ const fetchData = async (page: number) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr  v-if="employees.length === 0">
               <td
                 colspan="5"
                 class="text-center py-4 text-gray-500"
-                v-if="employees.length === 0"
+
               >
                 No roles found
               </td>
@@ -199,7 +198,7 @@ const fetchData = async (page: number) => {
                 {{ employee.department_name }}
               </td>
               <td class="px-6 py-4 text-right">
-                <a href="#" class="mx-2 font-medium text-green-600 hover:underline">Details</a>
+                <router-link :to="'/home/employees/'+employee.id" class="mx-2 font-medium text-green-600 hover:underline">Details</router-link>
                 <a
                   href="#"
                   @click="openEditModal(index)"

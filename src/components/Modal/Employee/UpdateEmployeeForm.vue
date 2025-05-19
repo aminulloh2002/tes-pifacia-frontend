@@ -8,7 +8,7 @@ import { fetchDepartments } from '@/api/departments.ts'
 import type { EmployeePayload } from '@/types/types.ts'
 import { toast } from 'vue3-toastify'
 import axios from 'axios'
-import { addEmployee, fetchEmployees, updateEmployee } from '@/api/employees.ts'
+import { fetchEmployees, updateEmployee } from '@/api/employees.ts'
 import useEmployeeStore from '@/stores/useEmployeeStore.ts'
 
 const props = defineProps({
@@ -19,6 +19,8 @@ const props = defineProps({
 })
 
 const employeePayload = ref<EmployeePayload>({
+  document: null,
+  employee_code: '',
   full_name: '',
   hired_date: '',
   notes: [''],
@@ -34,6 +36,8 @@ watch(
   (newEmp) => {
     if (newEmp) {
       employeePayload.value = {
+        document: newEmp.document_url,
+        employee_code: newEmp.employee_code,
         full_name: newEmp.full_name,
         hired_date: newEmp.hired_date,
         notes: newEmp.notes,
@@ -69,8 +73,22 @@ const isLoading = ref<boolean>(false)
 
 const saveHandler = async () => {
   isLoading.value = true
+    const formData = new FormData()
+
+    formData.append('document', employeePayload.value.document)
+    formData.append('employee_code', employeePayload.value.employee_code)
+    formData.append('full_name', employeePayload.value.full_name)
+    formData.append('hired_date', employeePayload.value.hired_date)
+    formData.append('is_active', employeePayload.value.is_active.toString())
+    formData.append('department_id', employeePayload.value.department_id)
+    formData.append('_method', 'PUT')
+
+    employeePayload.value.notes.forEach((note) => {
+      formData.append('notes[]', note)
+    })
+
   try {
-    await updateEmployee(curremp.value.id,employeePayload.value)
+    await updateEmployee(curremp.value.id, formData)
 
     const employees = await fetchEmployees()
 
@@ -80,6 +98,7 @@ const saveHandler = async () => {
     emit('toggleModal')
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      console.log(err.response)
       error.value = err.response.data.errors
     } else {
       error.value.full_name = ['something went wrong']
@@ -90,6 +109,11 @@ const saveHandler = async () => {
 
 const handleCreateOption = (value: number) => {
   employeePayload.value.is_active = value
+}
+
+const handleFileChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  employeePayload.value.document = target?.files?.[0]
 }
 </script>
 
@@ -102,6 +126,25 @@ const handleCreateOption = (value: number) => {
       v-model="employeePayload.full_name"
       :error="error?.name?.length ? error?.name[0] : ''"
     />
+    <FormInput
+      name="Employee Code"
+      type="text"
+      placeholder="1234"
+      v-model="employeePayload.employee_code"
+      :error="error?.employee_code?.length ? error?.name[0] : ''"
+    />
+    <div class="mb-5">
+      <label class="capitalize block mb-2 text-sm font-medium text-gray-900">Document</label>
+      <input
+        type="file"
+        :class="[{ 'border-red-500': error?.document?.[0] }]"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 invalid:border-red-500 invalid:ring-red-500 block p-2.5 w-full outline-0"
+        @change="handleFileChange($event)"
+      />
+      <p v-if="error?.document?.length" class="text-red-600 text-sm mb-4">
+        {{ error?.document?.[0] }}
+      </p>
+    </div>
     <div class="mb-5">
       <label class="capitalize block mb-2 text-sm font-medium text-gray-900">Department</label>
       <SelectInput

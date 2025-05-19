@@ -181,7 +181,7 @@ const fetchData = async (page: number) => {
                 {{ department.established_at }}
               </td>
               <td class="px-6 py-4 text-right">
-                <a href="#" class="mx-2 font-medium text-green-600 hover:underline">Details</a>
+                <router-link :to="'/home/departments/'+department.id" class="mx-2 font-medium text-green-600 hover:underline">Details</router-link>
                 <a
                   href="#"
                   @click="openEditModal(index)"

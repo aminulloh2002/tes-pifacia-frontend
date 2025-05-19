@@ -91,7 +91,7 @@ const auth = useAuthStore()
         class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 hover:text-blue-500"
       >
         <i class="pi pi-building text-xl"></i>
-        <span v-show="!props.collapsed">Employee Department</span>
+        <span v-show="!props.collapsed">Department</span>
       </router-link>
       <router-link
         active-class="text-blue-500 font-semibold"
@@ -99,7 +99,15 @@ const auth = useAuthStore()
         class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 hover:text-blue-500"
       >
         <i class="pi pi-users text-xl"></i>
-        <span v-show="!props.collapsed">Employee List</span>
+        <span v-show="!props.collapsed">Employee</span>
+      </router-link>
+      <router-link
+        active-class="text-blue-500 font-semibold"
+        to="/home/salaries"
+        class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 hover:text-blue-500"
+      >
+        <i class="pi pi-money-bill text-xl"></i>
+        <span v-show="!props.collapsed">Salary</span>
       </router-link>
     </nav>
   </aside>

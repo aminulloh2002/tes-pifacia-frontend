@@ -23,20 +23,16 @@ const fetchEmployeeDetails = async (id: string) => {
   })
 }
 
-const addEmployee = async (payload: EmployeePayload) => {
+const addEmployee = async (payload: FormData) => {
   return api.post('employees', payload, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
   })
 }
 
-const updateEmployee = async (id: string, payload: EmployeePayload) => {
-  return api.post(
-    `employees/${id}`,
-    { ...payload, _method: 'PUT' },
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    },
-  )
+const updateEmployee = async (id: string, payload: FormData) => {
+  return api.post(`employees/${id}`, payload, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, Multipart: 'form-data' },
+  })
 }
 
 const deleteEmployee = async (id: string) => {
@@ -45,4 +41,20 @@ const deleteEmployee = async (id: string) => {
   })
 }
 
-export { fetchEmployees, fetchEmployeeDetails, updateEmployee, deleteEmployee, addEmployee }
+const fetchEmployeeAudit = async (id: string, page: number = 1) => {
+  return api.get(`employees/${id}/audits`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    params: {
+      page: page,
+    },
+  })
+}
+
+export {
+  fetchEmployees,
+  fetchEmployeeDetails,
+  fetchEmployeeAudit,
+  updateEmployee,
+  deleteEmployee,
+  addEmployee,
+}
